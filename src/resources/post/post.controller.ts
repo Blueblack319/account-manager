@@ -20,6 +20,8 @@ class PostController implements Controller {
       validationMiddleware(validate.create),
       this.create
     );
+    this.router.get(this.path, this.findAll);
+    this.router.get(`${this.path}/:id`, this.findById);
   }
 
   private create = async (
@@ -33,6 +35,33 @@ class PostController implements Controller {
       res.status(201).json({ post });
     } catch (e) {
       next(new HttpException(400, 'Cannot create a post')); // e.message?
+    }
+  };
+
+  private findAll = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const posts = await this.PostService.findAll();
+      res.status(200).json({ ...posts });
+    } catch (e) {
+      next(new HttpException(400, 'Cannot find all posts')); // e.message?
+    }
+  };
+
+  private findById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const { id } = req.params;
+      const post = await this.PostService.findById(id);
+      res.status(200).json({ post });
+    } catch (e) {
+      next(new HttpException(400, 'Cannot find all posts')); // e.message?
     }
   };
 }
