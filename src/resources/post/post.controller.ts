@@ -4,6 +4,7 @@ import HttpException from '@/utils/exceptions/http.exception';
 import validationMiddleware from '@/middleware/validation.middleware';
 import validate from '@/resources/post/post.validation';
 import PostService from '@/resources/post/post.service';
+import { TitleQuery } from '@/utils/interfaces/query.interface';
 
 class PostController implements Controller {
   public path = '/posts';
@@ -39,13 +40,19 @@ class PostController implements Controller {
   };
 
   private findAll = async (
-    req: Request,
+    req: Request<{}, {}, {}, TitleQuery>,
     res: Response,
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      const posts = await this.PostService.findAll();
-      res.status(200).json({ ...posts });
+      const { title } = req.query;
+      if (title) {
+        const post = await this.PostService.findByTitle(title);
+        res.status(200).json({ post });
+      } else {
+        const posts = await this.PostService.findAll();
+        res.status(200).json({ ...posts });
+      }
     } catch (e) {
       next(new HttpException(400, 'Cannot find all posts')); // e.message?
     }
@@ -61,7 +68,7 @@ class PostController implements Controller {
       const post = await this.PostService.findById(id);
       res.status(200).json({ post });
     } catch (e) {
-      next(new HttpException(400, 'Cannot find all posts')); // e.message?
+      next(new HttpException(400, 'Cannot find a post by id')); // e.message?
     }
   };
 }

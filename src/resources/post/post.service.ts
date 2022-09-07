@@ -1,6 +1,5 @@
 import PostModel from '@/resources/post/post.model';
 import Post from '@/resources/post/post.interface';
-import { ObjectId } from 'mongoose';
 
 class PostService {
   private post = PostModel;
@@ -10,7 +9,7 @@ class PostService {
    */
   public async create(title: string, body: string): Promise<Post> {
     try {
-      const post = await this.post.create({ title, body });
+      const post = (await this.post.create({ title, body })) as Post;
       return post;
     } catch (e) {
       throw new Error('Unable to create a post.');
@@ -41,6 +40,19 @@ class PostService {
     }
   }
 
+  /**
+   * Find a post by title
+   */
+  public async findByTitle(
+    title: string | undefined
+  ): Promise<Post | null | undefined> {
+    try {
+      const post = await this.post.findOne({ title }).exec();
+      return post;
+    } catch (e) {
+      throw new Error('Cannot find a post by title');
+    }
+  }
   /**
    * Update a post
    */
