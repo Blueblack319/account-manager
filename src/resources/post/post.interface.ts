@@ -1,8 +1,20 @@
-import { Types, Document } from 'mongoose';
-
 interface Post {
   title: string;
   body: string;
 }
 
-export default Post;
+interface TitleQuery {
+  title: string;
+}
+
+interface EditPostInput {
+  id: string;
+  title: string;
+  body: string;
+}
+
+interface DeletePostInput {
+  id: string;
+}
+
+export { Post, TitleQuery, EditPostInput, DeletePostInput };

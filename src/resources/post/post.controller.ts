@@ -4,7 +4,7 @@ import HttpException from '@/utils/exceptions/http.exception';
 import validationMiddleware from '@/middleware/validation.middleware';
 import validate from '@/resources/post/post.validation';
 import PostService from '@/resources/post/post.service';
-import { TitleQuery } from '@/utils/interfaces/query.interface';
+import { TitleQuery } from '@/resources/post/post.interface';
 
 class PostController implements Controller {
   public path = '/posts';
@@ -23,6 +23,8 @@ class PostController implements Controller {
     );
     this.router.get(this.path, this.findAll);
     this.router.get(`${this.path}/:id`, this.findById);
+    this.router.put(this.path, this.editPost);
+    this.router.delete(this.path, this.deletePost);
   }
 
   private create = async (
@@ -69,6 +71,34 @@ class PostController implements Controller {
       res.status(200).json({ post });
     } catch (e) {
       next(new HttpException(400, 'Cannot find a post by id')); // e.message?
+    }
+  };
+
+  private editPost = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      await this.PostService.editPost(req.body);
+      res.status(204).send({ isSuccess: true });
+    } catch (e) {
+      // post not found 404 넘기기
+      next(new HttpException(400, 'Cannot edit a post'));
+    }
+  };
+
+  private deletePost = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      await this.PostService.deletePost(req.body);
+      res.status(204).send({ nothing: true });
+    } catch (e) {
+      // post not found 404 넘기기
+      next(new HttpException(400, 'Cannot delete a post'));
     }
   };
 }
