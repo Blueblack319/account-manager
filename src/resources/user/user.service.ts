@@ -1,5 +1,4 @@
 import UserModel from '@/resources/user/user.model';
-import { User } from '@/resources/user/user.interface';
 import token from '@/utils/token';
 
 class UserService {
