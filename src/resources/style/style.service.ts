@@ -30,8 +30,22 @@ class StyleService {
   }
 
   /**
-   *
+   * Find all styles in user
    */
+  public async findAll(userId: Types.ObjectId): Promise<Style[] | void> {
+    try {
+      const user = await this.user
+        .findById(userId)
+        .populate({ path: 'styles' })
+        .select('styles');
+      if (!user) {
+        throw new Error('User not found');
+      }
+      return user.styles;
+    } catch (e) {
+      throw new Error('Cannot find all styles');
+    }
+  }
 }
 
 export default StyleService;

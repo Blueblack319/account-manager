@@ -32,7 +32,6 @@ async function authenticatedMiddleware(
     if (!existed) {
       return next(new HttpException(401, 'Unauthorized'));
     }
-
     req.userId = existed._id;
     return next();
   } catch (error) {

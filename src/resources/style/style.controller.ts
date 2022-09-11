@@ -8,7 +8,7 @@ import authenticatedMiddleware from '@/middleware/authenticated.middleware';
 import { Types } from 'mongoose';
 
 class StyleController implements Controller {
-  public path = '/style';
+  public path = '/styles';
   public router = Router();
   private StyleService = new StyleService();
 
@@ -23,6 +23,7 @@ class StyleController implements Controller {
       authenticatedMiddleware,
       this.create
     );
+    this.router.get(this.path, authenticatedMiddleware, this.findAll);
   }
 
   private create = async (
@@ -33,11 +34,7 @@ class StyleController implements Controller {
     try {
       const userId = req.userId;
       const { name, tickers } = req.body;
-      const style = await this.StyleService.create(
-        name,
-        tickers,
-        userId as Types.ObjectId
-      );
+      const style = await this.StyleService.create(name, tickers, userId);
       res.status(201).json({ style });
     } catch (e) {
       if (e instanceof Error) {
@@ -46,13 +43,21 @@ class StyleController implements Controller {
     }
   };
 
-  // private findAll = async (
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response | void> => {
-  //   const { _id } = req.user;
-  // };
+  private findAll = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const userId = req.userId;
+      const styles = await this.StyleService.findAll(userId);
+      res.status(200).json({ styles });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
 }
 
 export default StyleController;
