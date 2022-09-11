@@ -51,6 +51,34 @@ class StyleService {
   /**
    * Find style by id
    */
+  public async findById(
+    styleId: Types.ObjectId,
+    userId: Types.ObjectId
+  ): Promise<Style | void> {
+    try {
+      // check user has this styleId
+      const user = await this.user
+        .findOne({ styles: { $in: [styleId] } })
+        .select('id')
+        .exec();
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+      if (!userId.equals(user._id)) {
+        throw new Error('This is not your style');
+      }
+      const style = await this.style.findById(styleId);
+      if (!style) {
+        throw new Error('Style not found');
+      }
+      return style;
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
+  }
 
   /**
    * Find style by title

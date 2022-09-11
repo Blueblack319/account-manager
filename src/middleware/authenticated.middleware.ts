@@ -10,15 +10,14 @@ async function authenticatedMiddleware(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  // headers에서 bearer 받기
   const bearer = req.headers.authorization;
-  // check a bearer
+
   if (!bearer || !bearer.startsWith('Bearer')) {
     return next(new HttpException(401, 'Unauthorized'));
   }
-  // get token
+
   const accessToken = bearer.split('Bearer')[1].trim();
-  // verify token
+
   try {
     const decoded: Token | JsonWebTokenError = await token.verifyToken(
       accessToken
@@ -37,7 +36,6 @@ async function authenticatedMiddleware(
   } catch (error) {
     return next(new HttpException(401, 'Unauthorized'));
   }
-  // req.user에 넣어주기
 }
 
 export default authenticatedMiddleware;

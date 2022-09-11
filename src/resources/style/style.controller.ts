@@ -24,6 +24,7 @@ class StyleController implements Controller {
       this.create
     );
     this.router.get(this.path, authenticatedMiddleware, this.findAll);
+    this.router.get(`${this.path}/:id`, authenticatedMiddleware, this.findById);
   }
 
   private create = async (
@@ -51,7 +52,27 @@ class StyleController implements Controller {
     try {
       const userId = req.userId;
       const styles = await this.StyleService.findAll(userId);
-      res.status(200).json({ styles });
+      return res.status(200).json({ styles });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
+
+  private findById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const { id } = req.params;
+      const userId = req.userId;
+      const style = await this.StyleService.findById(
+        new Types.ObjectId(id),
+        userId
+      );
+      res.status(200).json({ style });
     } catch (e) {
       if (e instanceof Error) {
         next(new HttpException(400, e.message));
