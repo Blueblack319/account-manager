@@ -28,6 +28,10 @@ class StyleService {
       throw new Error('Unable to create a style.');
     }
   }
+
+  /**
+   *
+   */
 }
 
 export default StyleService;

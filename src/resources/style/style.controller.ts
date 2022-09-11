@@ -5,6 +5,7 @@ import validationMiddleware from '@/middleware/validation.middleware';
 import validation from '@/resources/style/style.validation';
 import HttpException from '@/utils/exceptions/http.exception';
 import authenticatedMiddleware from '@/middleware/authenticated.middleware';
+import { Types } from 'mongoose';
 
 class StyleController implements Controller {
   public path = '/style';
@@ -30,9 +31,13 @@ class StyleController implements Controller {
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      const { _id } = req.user;
+      const userId = req.userId;
       const { name, tickers } = req.body;
-      const style = await this.StyleService.create(name, tickers, _id);
+      const style = await this.StyleService.create(
+        name,
+        tickers,
+        userId as Types.ObjectId
+      );
       res.status(201).json({ style });
     } catch (e) {
       if (e instanceof Error) {
@@ -41,11 +46,13 @@ class StyleController implements Controller {
     }
   };
 
-  private findAll = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> => {};
+  // private findAll = async (
+  //   req: Request,
+  //   res: Response,
+  //   next: NextFunction
+  // ): Promise<Response | void> => {
+  //   const { _id } = req.user;
+  // };
 }
 
 export default StyleController;

@@ -1,9 +1,10 @@
-export {};
+import { Types } from 'mongoose';
 
 declare global {
   namespace Express {
-    interface Request {
-      user?: import('../resources/user/user.interface').default;
+    export interface Request {
+      // user?: import('../resources/user/user.interface').default;
+      userId?: Types.ObjectId;
     }
   }
 }

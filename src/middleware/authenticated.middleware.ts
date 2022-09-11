@@ -20,19 +20,20 @@ async function authenticatedMiddleware(
   const accessToken = bearer.split('Bearer')[1].trim();
   // verify token
   try {
-    const payload: Token | JsonWebTokenError = await token.verifyToken(
+    const decoded: Token | JsonWebTokenError = await token.verifyToken(
       accessToken
     );
-    if (payload instanceof JsonWebTokenError) {
+    if (decoded instanceof JsonWebTokenError) {
       return next(new HttpException(401, 'Unauthorized'));
     }
-    const user = await UserModel.findById(payload.id)
-      .select('-password')
-      .exec();
-    if (!user) {
+
+    const existed = await UserModel.exists({ _id: decoded.id });
+
+    if (!existed) {
       return next(new HttpException(401, 'Unauthorized'));
     }
-    req.user = user;
+
+    req.userId = existed._id;
     return next();
   } catch (error) {
     return next(new HttpException(401, 'Unauthorized'));

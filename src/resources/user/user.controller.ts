@@ -71,10 +71,10 @@ class UserController implements Controller {
     res: Response,
     next: NextFunction
   ): Response | void => {
-    if (!req.user) {
+    if (!req.userId) {
       next(new HttpException(400, 'Not logged in user'));
     }
-    res.status(200).send({ data: req.user });
+    res.status(200).send({ data: req.userId });
   };
 }
 
