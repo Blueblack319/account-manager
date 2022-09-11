@@ -17,6 +17,7 @@ class StyleService {
     userId: Types.ObjectId
   ): Promise<Style> {
     try {
+      // name이 같은 style은 못 만들게 하자!
       const style = await this.style.create({ name, tickers });
       await this.user
         .findByIdAndUpdate(userId, {
@@ -46,6 +47,22 @@ class StyleService {
       throw new Error('Cannot find all styles');
     }
   }
+
+  /**
+   * Find style by id
+   */
+
+  /**
+   * Find style by title
+   */
+
+  /**
+   * Edit style
+   */
+
+  /**
+   * Delete style
+   */
 }
 
 export default StyleService;
