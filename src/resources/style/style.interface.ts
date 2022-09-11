@@ -16,4 +16,8 @@ interface Style {
   tickers: Ticker[];
 }
 
-export { Style, Ticker };
+interface NameQuery {
+  name: string;
+}
+
+export { Style, Ticker, NameQuery };

@@ -1,10 +1,13 @@
 # Manage your account seperately by investment style
 
-한 계좌 내에서 투자스타일별로 따로 관리할 수 있는 어플리케이션
+투자스타일별로 따로 관리할 수 있는 어플리케이션
 
 1. 평균 매입단가, 언제 샀는지
 2. 샀을 때 왜 샀는지 근거를 적을 수 있게 하기
 3. 나중에 계좌와 연동할 수 있으면 좋고
+4. 타인의 투자스타일을 볼 수 도 있게?
+5. 투자동아리에 맞는 어플리케이션 제작?
+6. 수익률이 높은 스타일에서 낮은 스타일로 내림차순 보이기
 
 시나리오
 
@@ -36,5 +39,5 @@ DB
    - 여기서 실시간 데이터는 현재가뿐
 
 - [x] global.d.ts에 대해 공부하기
-- [ ] invStyle CRUD
-- [ ] user와 style 연결하기(one-to-many)
+- [ ] Style CRUD
+- [x] user와 style 연결하기(one-to-many)

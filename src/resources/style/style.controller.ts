@@ -6,6 +6,7 @@ import validation from '@/resources/style/style.validation';
 import HttpException from '@/utils/exceptions/http.exception';
 import authenticatedMiddleware from '@/middleware/authenticated.middleware';
 import { Types } from 'mongoose';
+import { NameQuery } from './style.interface';
 
 class StyleController implements Controller {
   public path = '/styles';
@@ -23,8 +24,9 @@ class StyleController implements Controller {
       authenticatedMiddleware,
       this.create
     );
-    this.router.get(this.path, authenticatedMiddleware, this.findAll);
+    this.router.get(`${this.path}/all`, this.findAll);
     this.router.get(`${this.path}/:id`, authenticatedMiddleware, this.findById);
+    this.router.get(this.path, this.findByTitle);
   }
 
   private create = async (
@@ -50,9 +52,8 @@ class StyleController implements Controller {
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      const userId = req.userId;
-      const styles = await this.StyleService.findAll(userId);
-      return res.status(200).json({ styles });
+      const styles = await this.StyleService.findAll();
+      res.status(200).json({ styles });
     } catch (e) {
       if (e instanceof Error) {
         next(new HttpException(400, e.message));
@@ -73,6 +74,22 @@ class StyleController implements Controller {
         userId
       );
       res.status(200).json({ style });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
+
+  private findByTitle = async (
+    req: Request<{}, {}, {}, NameQuery>,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const { name } = req.query;
+      const styles = await this.StyleService.findByName(name);
+      res.status(200).json({ styles });
     } catch (e) {
       if (e instanceof Error) {
         next(new HttpException(400, e.message));

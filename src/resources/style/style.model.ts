@@ -23,8 +23,12 @@ const StyleSchema = new Schema({
   name: {
     type: String,
     required: true,
+    index: true,
   },
   tickers: [TickerSchema],
 });
+
+// const Style = model<Style>('Style', StyleSchema);
+// Style.createIndexes({ name: 'text' });
 
 export default model<Style>('Style', StyleSchema);

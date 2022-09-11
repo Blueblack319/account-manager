@@ -2,7 +2,6 @@ import StyleModel from '@/resources/style/style.model';
 import UserModel from '@/resources/user/user.model';
 import { Style, Ticker } from '@/resources/style/style.interface';
 import { Types } from 'mongoose';
-import { User } from '@/resources/user/user.interface';
 
 class StyleService {
   private style = StyleModel;
@@ -31,9 +30,21 @@ class StyleService {
   }
 
   /**
+   * Find all styles
+   */
+  public async findAll(): Promise<Style[]> {
+    try {
+      const styles = await this.style.find({});
+      return styles;
+    } catch (e) {
+      throw new Error('Unable to find styles');
+    }
+  }
+
+  /**
    * Find all styles in user
    */
-  public async findAll(userId: Types.ObjectId): Promise<Style[] | void> {
+  public async findAllInUser(userId: Types.ObjectId): Promise<Style[] | void> {
     try {
       const user = await this.user
         .findById(userId)
@@ -81,8 +92,24 @@ class StyleService {
   }
 
   /**
-   * Find style by title
+   * Find styles by name part
    */
+  public async findByName(name: string): Promise<Style[] | void> {
+    try {
+      console.log(name);
+      const styles = await this.style.find({
+        $text: { $search: name },
+      });
+      if (!styles) {
+        throw new Error('Styles not found');
+      }
+      return styles;
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
+  }
 
   /**
    * Edit style
