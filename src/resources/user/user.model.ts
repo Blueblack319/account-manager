@@ -22,6 +22,12 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    styles: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Style',
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -34,6 +40,9 @@ UserSchema.pre('save', async function (next) {
   this.password = hash;
   return next();
 });
+
+// Cascade
+// UserSchema.pre('remove', )
 
 // arrow function은 후순위로 생김
 // 그래서 arrow function을 쓰면 에러가 발생하나?

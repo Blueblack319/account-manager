@@ -3,6 +3,8 @@ import Controller from '@/utils/interfaces/controller.interface';
 import UserService from '@/resources/user/user.service';
 import HttpException from '@/utils/exceptions/http.exception';
 import authenticatedMiddleware from '@/middleware/authenticated.middleware';
+import validationMiddleware from '@/middleware/validation.middleware';
+import validation from '@/resources/user/user.validation';
 
 class UserController implements Controller {
   public path = '/user';
@@ -14,8 +16,16 @@ class UserController implements Controller {
   }
 
   private initializeRoutes(): void {
-    this.router.post(`${this.path}/register`, this.register);
-    this.router.post(`${this.path}/login`, this.login);
+    this.router.post(
+      `${this.path}/register`,
+      validationMiddleware(validation.register),
+      this.register
+    );
+    this.router.post(
+      `${this.path}/login`,
+      validationMiddleware(validation.login),
+      this.login
+    );
     this.router.get(this.path, authenticatedMiddleware, this.getUser);
   }
 

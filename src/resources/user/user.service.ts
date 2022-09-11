@@ -15,7 +15,7 @@ class UserService {
   ): Promise<string | undefined> {
     try {
       const user = await this.user.create({ email, name, password, role });
-      const accessToken = token.createToken(user);
+      const accessToken = token.createToken(user._id);
       return accessToken;
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -35,7 +35,7 @@ class UserService {
       }
 
       if (await user.isValidPassword(password)) {
-        return token.createToken(user);
+        return token.createToken(user._id);
       } else {
         throw new Error('Wrong password');
       }

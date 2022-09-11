@@ -37,7 +37,9 @@ class PostController implements Controller {
       const post = await this.PostService.create(title, body);
       res.status(201).json({ post });
     } catch (e) {
-      next(new HttpException(400, 'Cannot create a post')); // e.message?
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message)); // e.message?
+      }
     }
   };
 
