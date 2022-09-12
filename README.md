@@ -32,6 +32,7 @@ DB
 - deal이라는 collection을 만들까?
 - users -> styles -> deal
 - deal
+  - title
   - description
   - tickers
 - tickers 대신 deals

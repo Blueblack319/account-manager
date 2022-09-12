@@ -1,23 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { Style } from '@/resources/style/style.interface';
-
-const TickerSchema = new Schema(
-  {
-    ticker: {
-      type: String,
-      required: true,
-    },
-    count: {
-      type: Number,
-      required: true,
-    },
-    buyingPrice: {
-      type: Number,
-      required: true,
-    },
-  },
-  { timestamps: true }
-);
+import DealSchema from '@/resources/deal/deal.model';
 
 const StyleSchema = new Schema({
   name: {
@@ -29,7 +12,7 @@ const StyleSchema = new Schema({
     type: String,
     required: true,
   },
-  tickers: [TickerSchema],
+  tickers: [DealSchema],
 });
 
 // const Style = model<Style>('Style', StyleSchema);

@@ -1,8 +1,4 @@
-interface Ticker {
-  ticker: string;
-  count: number;
-  buyingPrice: number;
-}
+import { Deal } from '@/resources/deal/deal.interface';
 
 interface Style {
   // 투자스타일 이름
@@ -14,11 +10,11 @@ interface Style {
   //   totalAvgPurPrice: number;
 
   // 이 투자스타일로 매입한 종목정보
-  tickers: Ticker[];
+  deals: Deal[];
 }
 
 interface NameQuery {
   name: string;
 }
 
-export { Style, Ticker, NameQuery };
+export { Style, NameQuery };
