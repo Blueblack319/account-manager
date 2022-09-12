@@ -1,12 +1,12 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { Types } from 'mongoose';
+import { NameQuery } from './style.interface';
 import Controller from '@/utils/interfaces/controller.interface';
 import StyleService from '@/resources/style/style.service';
 import validationMiddleware from '@/middleware/validation.middleware';
 import validation from '@/resources/style/style.validation';
 import HttpException from '@/utils/exceptions/http.exception';
 import authenticatedMiddleware from '@/middleware/authenticated.middleware';
-import { Types } from 'mongoose';
-import { NameQuery } from './style.interface';
 
 class StyleController implements Controller {
   public path = '/styles';
@@ -46,7 +46,7 @@ class StyleController implements Controller {
       res.status(201).json({ style });
     } catch (e) {
       if (e instanceof Error) {
-        next(new HttpException(400, e.message)); // e.message?
+        next(new HttpException(400, e.message));
       }
     }
   };

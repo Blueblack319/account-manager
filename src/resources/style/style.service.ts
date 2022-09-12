@@ -1,7 +1,8 @@
+import { Style } from '@/resources/style/style.interface';
+import { Ticker } from '@/resources/deal/deal.interface';
+import { Types } from 'mongoose';
 import StyleModel from '@/resources/style/style.model';
 import UserModel from '@/resources/user/user.model';
-import { Style, Ticker } from '@/resources/style/style.interface';
-import { Types } from 'mongoose';
 
 class StyleService {
   private style = StyleModel;
@@ -18,7 +19,7 @@ class StyleService {
   ): Promise<Style> {
     try {
       // name이 같은 style은 못 만들게 하자!
-      const style = await this.style.create({ name, tickers });
+      const style = await this.style.create({ name, description, tickers });
       await this.user
         .findByIdAndUpdate(userId, {
           $push: { styles: style._id },

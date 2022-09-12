@@ -8,7 +8,7 @@ const create = Joi.object({
     tickers: Joi.array().items({
       ticker: Joi.string().max(20),
       count: Joi.number(),
-      buyingPrice: Joi.number(),
+      price: Joi.number(),
     }),
   }),
 });

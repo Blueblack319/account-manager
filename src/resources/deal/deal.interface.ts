@@ -9,4 +9,4 @@ interface Deal {
   tickers: Ticker[];
 }
 
-export { Deal };
+export { Ticker, Deal };

@@ -7,11 +7,15 @@ const TickerSchema = new Schema(
       type: String,
       required: true,
     },
+    buying: {
+      type: Boolean,
+      required: true,
+    },
     count: {
       type: Number,
       required: true,
     },
-    buyingPrice: {
+    price: {
       type: Number,
       required: true,
     },

@@ -37,6 +37,7 @@ DB
   - tickers
 - tickers 대신 deals
 - deals 안에 tickers를 넣자
+- style을 만들 때는 deal을 받지 말자
 
 유저가 가지고 있는 정보
 
