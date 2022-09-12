@@ -1,7 +1,8 @@
 interface Ticker {
   ticker: string;
+  buying: boolean;
   count: number;
-  buyingPrice: number;
+  price: number;
 }
 
 interface Deal {

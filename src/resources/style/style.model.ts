@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 import { Style } from '@/resources/style/style.interface';
-import DealSchema from '@/resources/deal/deal.model';
+import { DealSchema } from '@/resources/deal/deal.model';
 
 const StyleSchema = new Schema({
   name: {
@@ -12,7 +12,12 @@ const StyleSchema = new Schema({
     type: String,
     required: true,
   },
-  tickers: [DealSchema],
+  deals: [
+    {
+      type: Types.ObjectId,
+      ref: 'Deal',
+    },
+  ],
 });
 
 // const Style = model<Style>('Style', StyleSchema);

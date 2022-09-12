@@ -14,12 +14,11 @@ class StyleService {
   public async create(
     name: string,
     description: string,
-    tickers: Ticker[],
     userId: Types.ObjectId
   ): Promise<Style> {
     try {
       // name이 같은 style은 못 만들게 하자!
-      const style = await this.style.create({ name, description, tickers });
+      const style = await this.style.create({ name, description });
       await this.user
         .findByIdAndUpdate(userId, {
           $push: { styles: style._id },

@@ -23,7 +23,7 @@ const TickerSchema = new Schema(
   { timestamps: true }
 );
 
-const DealSchema = new Schema({
+export const DealSchema = new Schema({
   description: {
     type: String,
     requied: true,

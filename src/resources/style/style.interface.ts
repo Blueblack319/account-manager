@@ -10,7 +10,7 @@ interface Style {
   //   totalAvgPurPrice: number;
 
   // 이 투자스타일로 매입한 종목정보
-  deals: Deal[];
+  deals?: Deal[];
 }
 
 interface NameQuery {

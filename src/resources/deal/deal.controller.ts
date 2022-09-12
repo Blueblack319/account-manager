@@ -14,7 +14,7 @@ class DealController implements Controller {
   }
 
   private initializeRoutes(): void {
-    this.router.post(this.path, authenticatedMiddleware, this.create);
+    this.router.post(`${this.path}/:id`, authenticatedMiddleware, this.create);
   }
 
   private create = async (
@@ -23,9 +23,9 @@ class DealController implements Controller {
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      const { styleId } = req.params;
+      const { id } = req.params;
       const { description, tickers } = req.body;
-      const deal = await this.DealService.create(styleId, description, tickers);
+      const deal = await this.DealService.create(id, description, tickers);
       res.status(201).json({ deal });
     } catch (e) {
       if (e instanceof Error) {
