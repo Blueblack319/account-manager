@@ -25,6 +25,10 @@ const StyleSchema = new Schema({
     required: true,
     index: true,
   },
+  description: {
+    type: String,
+    required: true,
+  },
   tickers: [TickerSchema],
 });
 

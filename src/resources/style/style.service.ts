@@ -12,6 +12,7 @@ class StyleService {
    */
   public async create(
     name: string,
+    description: string,
     tickers: Ticker[],
     userId: Types.ObjectId
   ): Promise<Style> {

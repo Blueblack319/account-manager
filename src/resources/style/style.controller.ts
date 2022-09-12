@@ -36,8 +36,13 @@ class StyleController implements Controller {
   ): Promise<Response | void> => {
     try {
       const userId = req.userId;
-      const { name, tickers } = req.body;
-      const style = await this.StyleService.create(name, tickers, userId);
+      const { name, description, tickers } = req.body;
+      const style = await this.StyleService.create(
+        name,
+        description,
+        tickers,
+        userId
+      );
       res.status(201).json({ style });
     } catch (e) {
       if (e instanceof Error) {

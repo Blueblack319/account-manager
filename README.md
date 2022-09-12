@@ -29,11 +29,13 @@ DB
   ...
   ]
 - 매입한 날짜별로 나눌까? => 나중에 업데이트하자. 우선 만들기부터
-- trading이라는 모델을 만들까?
-- users -> styles -> tradings
-- trading
+- deal이라는 collection을 만들까?
+- users -> styles -> deal
+- deal
   - description
   - tickers
+- tickers 대신 deals
+- deals 안에 tickers를 넣자
 
 유저가 가지고 있는 정보
 
