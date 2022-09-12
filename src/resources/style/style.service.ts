@@ -1,5 +1,4 @@
 import { Style } from '@/resources/style/style.interface';
-import { Ticker } from '@/resources/deal/deal.interface';
 import { Types } from 'mongoose';
 import StyleModel from '@/resources/style/style.model';
 import UserModel from '@/resources/user/user.model';
@@ -86,9 +85,7 @@ class StyleService {
       }
       return style;
     } catch (e) {
-      if (e instanceof Error) {
-        throw new Error(e.message);
-      }
+      throw new Error('Something wrong in finding by ID');
     }
   }
 
@@ -97,7 +94,6 @@ class StyleService {
    */
   public async findByName(name: string): Promise<Style[] | void> {
     try {
-      console.log(name);
       const styles = await this.style.find({
         $text: { $search: name },
       });
@@ -106,9 +102,7 @@ class StyleService {
       }
       return styles;
     } catch (e) {
-      if (e instanceof Error) {
-        throw new Error(e.message);
-      }
+      throw new Error('Something wrong in finding by name');
     }
   }
 
@@ -119,6 +113,28 @@ class StyleService {
   /**
    * Delete style
    */
+  public async delete(styleId: string, userId: Types.ObjectId): Promise<void> {
+    try {
+      const user = await this.user
+        .findOne({ styles: { $in: [styleId] } })
+        .select('id')
+        .exec();
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+      if (!userId.equals(user._id)) {
+        // Need to Types.ObjectId
+        throw new Error('This is not your style');
+      }
+      const isDeleted = await this.style.deleteOne({ _id: styleId });
+      if (!isDeleted) {
+        throw new Error('Style not found');
+      }
+    } catch (e) {
+      throw new Error('Something wrong in deleting by ID');
+    }
+  }
 }
 
 export default StyleService;

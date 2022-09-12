@@ -7,7 +7,7 @@ import Token from '@/utils/interfaces/token.interface';
 
 async function authenticatedMiddleware(
   req: Request,
-  res: Response,
+  _: Response,
   next: NextFunction
 ): Promise<void> {
   const bearer = req.headers.authorization;

@@ -1,6 +1,7 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model, Types, Query } from 'mongoose';
 import { Style } from '@/resources/style/style.interface';
-import { DealSchema } from '@/resources/deal/deal.model';
+import Deal from '@/resources/deal/deal.model';
+import User from '@/resources/user/user.model';
 
 const StyleSchema = new Schema({
   name: {
@@ -20,7 +21,19 @@ const StyleSchema = new Schema({
   ],
 });
 
-// const Style = model<Style>('Style', StyleSchema);
-// Style.createIndexes({ name: 'text' });
+StyleSchema.pre('deleteOne', async function (next): Promise<void> {
+  try {
+    await Deal.deleteMany({ style: this._id });
+    // 왜 안되지??
+    await User.findOneAndUpdate(
+      { styles: { $in: this._id } },
+      { $pull: { styles: this._id } }
+    );
+
+    next();
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 export default model<Style>('Style', StyleSchema);

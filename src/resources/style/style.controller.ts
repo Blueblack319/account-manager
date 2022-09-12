@@ -27,6 +27,11 @@ class StyleController implements Controller {
     this.router.get(`${this.path}/all`, this.findAll);
     this.router.get(`${this.path}/:id`, authenticatedMiddleware, this.findById);
     this.router.get(this.path, this.findByTitle);
+    this.router.delete(
+      `${this.path}/:id`,
+      authenticatedMiddleware,
+      this.delete
+    );
   }
 
   private create = async (
@@ -90,6 +95,22 @@ class StyleController implements Controller {
       const { name } = req.query;
       const styles = await this.StyleService.findByName(name);
       res.status(200).json({ styles });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
+
+  private delete = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const { id } = req.params;
+      const userId = req.userId;
+      await this.StyleService.delete(id, userId);
     } catch (e) {
       if (e instanceof Error) {
         next(new HttpException(400, e.message));

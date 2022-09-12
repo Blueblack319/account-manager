@@ -1,14 +1,14 @@
 import { Deal, Ticker } from '@/resources/deal/deal.interface';
 import DealModel from '@/resources/deal/deal.model';
 import StyleModel from '@/resources/style/style.model';
-import UserModel from '@/resources/user/user.model';
-import { Types } from 'mongoose';
 
 class DealService {
   private deal = DealModel;
-  //   private user = UserModel; Do not need?
   private style = StyleModel;
 
+  /**
+   * Create a new deal
+   */
   public async create(
     styleId: string,
     description: string,
@@ -25,6 +25,11 @@ class DealService {
       throw new Error('Unable to create a deal');
     }
   }
+
+  /**
+   * Remove a deal
+   */
+  //   public async delete();
 }
 
 export default DealService;
