@@ -50,3 +50,8 @@ DB
 - [x] global.d.ts에 대해 공부하기
 - [ ] Style CRUD
 - [x] user와 style 연결하기(one-to-many)
+- [ ] style schema에 owner 추가하기
+- [ ] 로그인한 유저와 style owner 비교해서 create하기
+- [ ] delete cascade
+- [x] name이 같은 style은 못 만들게 하자
+- [ ] style의 owner와 로그인한 유저가 같을때만 deal create

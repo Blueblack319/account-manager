@@ -13,19 +13,24 @@ class StyleService {
   public async create(
     name: string,
     description: string,
-    userId: Types.ObjectId
-  ): Promise<Style> {
+    owner: Types.ObjectId
+  ): Promise<Style | void> {
     try {
-      // name이 같은 style은 못 만들게 하자!
-      const style = await this.style.create({ name, description });
+      const existed = await this.style.findOne({ name });
+      if (existed) {
+        throw new Error('Already exist');
+      }
+      const style = await this.style.create({ owner, name, description });
       await this.user
-        .findByIdAndUpdate(userId, {
+        .findByIdAndUpdate(owner, {
           $push: { styles: style._id },
         })
         .exec();
       return style;
     } catch (e) {
-      throw new Error('Unable to create a style.');
+      if (e instanceof Error) {
+        throw new Error(e.message ? e.message : 'Unable to create a new style');
+      }
     }
   }
 
