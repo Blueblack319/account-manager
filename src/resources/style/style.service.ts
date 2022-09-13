@@ -16,7 +16,7 @@ class StyleService {
     owner: Types.ObjectId
   ): Promise<Style | void> {
     try {
-      const existed = await this.style.findOne({ name });
+      const existed = await this.style.findOne({ name }).select('_id');
       if (existed) {
         throw new Error('Already exist');
       }

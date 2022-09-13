@@ -11,18 +11,24 @@ class DealService {
    */
   public async create(
     styleId: string,
+    userId: string,
     description: string,
     tickers: Ticker[]
-  ): Promise<Deal> {
+  ): Promise<Deal | void> {
     try {
+      const style = await this.style.findOne({ owner: userId, _id: styleId });
+      if (!style) {
+        throw new Error('This style is not yours');
+      }
       const deal = await this.deal.create({ description, tickers });
-      await this.style.findByIdAndUpdate(styleId, {
-        $push: { deals: deal._id },
-      });
+      style.deals?.push(deal);
+      style.save();
 
       return deal;
     } catch (e) {
-      throw new Error('Unable to create a deal');
+      if (e instanceof Error) {
+        throw new Error(e.message ? e.message : 'Unable to create a deal');
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 import { Deal } from '@/resources/deal/deal.interface';
 
 const TickerSchema = new Schema(
@@ -24,6 +24,11 @@ const TickerSchema = new Schema(
 );
 
 export const DealSchema = new Schema({
+  style: {
+    type: Types.ObjectId,
+    required: true,
+    ref: 'Style',
+  },
   description: {
     type: String,
     requied: true,
