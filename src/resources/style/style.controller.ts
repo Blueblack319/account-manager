@@ -111,6 +111,7 @@ class StyleController implements Controller {
       const { id } = req.params;
       const userId = req.userId;
       await this.StyleService.delete(id, userId);
+      res.status(200).send('Success');
     } catch (e) {
       if (e instanceof Error) {
         next(new HttpException(400, e.message));

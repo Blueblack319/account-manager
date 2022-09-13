@@ -23,11 +23,11 @@ class DealController implements Controller {
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      const { styleId } = req.params;
+      const { id } = req.params;
       const { description, tickers } = req.body;
       const userId = req.userId.toString();
       const deal = await this.DealService.create(
-        styleId,
+        id,
         userId,
         description,
         tickers

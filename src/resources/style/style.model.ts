@@ -26,16 +26,17 @@ const StyleSchema = new Schema({
   ],
 });
 
-StyleSchema.pre('deleteOne', async function (next): Promise<void> {
-  try {
-    await Deal.deleteMany({ style: this._id });
-    // 왜 안되지??
-    const user = await User.findOne({ styles: { $in: this._id } });
-    console.log(user);
-    next();
-  } catch (e) {
-    console.log(e);
-  }
-});
+// StyleSchema.pre('deleteOne', async function (next): Promise<void> {
+//   try {
+//     await Deal.deleteMany({ style: this._id });
+//     // 왜 안되지??
+// 아마도 pull을 잘못쓴듯..
+//     const user = await User.findById(this.owner);
+//     console.log(user);
+//     next();
+//   } catch (e) {
+//     console.log(e);
+//   }
+// });
 
 export default model<Style>('Style', StyleSchema);

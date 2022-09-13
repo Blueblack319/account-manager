@@ -2,11 +2,12 @@ import { Style } from '@/resources/style/style.interface';
 import { Types } from 'mongoose';
 import StyleModel from '@/resources/style/style.model';
 import UserModel from '@/resources/user/user.model';
+import DealModel from '@/resources/deal/deal.model';
 
 class StyleService {
   private style = StyleModel;
   private user = UserModel;
-
+  private deal = DealModel;
   /**
    * Create a new style
    */
@@ -120,24 +121,24 @@ class StyleService {
    */
   public async delete(styleId: string, userId: Types.ObjectId): Promise<void> {
     try {
-      const user = await this.user
-        .findOne({ styles: { $in: [styleId] } })
-        .select('id')
-        .exec();
-
-      if (!user) {
-        throw new Error('User not found');
-      }
-      if (!userId.equals(user._id)) {
-        // Need to Types.ObjectId
-        throw new Error('This is not your style');
-      }
-      const isDeleted = await this.style.deleteOne({ _id: styleId });
-      if (!isDeleted) {
+      const style = await this.style.findById(styleId);
+      if (!style) {
         throw new Error('Style not found');
       }
+      if (!userId.equals(style.owner)) {
+        throw new Error('This style is not yours');
+      }
+      await this.user.findByIdAndUpdate(userId, {
+        $pull: { styles: styleId },
+      });
+      await this.deal.deleteMany({ style: styleId });
+      await this.style.deleteOne({ _id: styleId });
     } catch (e) {
-      throw new Error('Something wrong in deleting by ID');
+      if (e instanceof Error) {
+        throw new Error(
+          e.message ? e.message : 'Something wrong in deleting by ID'
+        );
+      }
     }
   }
 }

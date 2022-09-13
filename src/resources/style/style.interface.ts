@@ -1,7 +1,9 @@
 import { Deal } from '@/resources/deal/deal.interface';
+import { Types } from 'mongoose';
 
 interface Style {
   // 투자스타일 이름
+  owner: Types.ObjectId;
   name: string;
   description: string;
 

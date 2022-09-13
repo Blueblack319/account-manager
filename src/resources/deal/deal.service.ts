@@ -16,11 +16,16 @@ class DealService {
     tickers: Ticker[]
   ): Promise<Deal | void> {
     try {
+      console.log(userId, styleId);
       const style = await this.style.findOne({ owner: userId, _id: styleId });
       if (!style) {
         throw new Error('This style is not yours');
       }
-      const deal = await this.deal.create({ description, tickers });
+      const deal = await this.deal.create({
+        style: styleId,
+        description,
+        tickers,
+      });
       style.deals?.push(deal);
       style.save();
 
