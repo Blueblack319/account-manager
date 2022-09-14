@@ -43,9 +43,6 @@ class DealService {
    * Remove a deal
    */
   public async delete(userId: Types.ObjectId, dealId: string): Promise<void> {
-    // 1. deal을 가지고 있는 style 찾기
-    // 2. 그 style을 가지고 있는 유저 찾기
-    // 3. 그 유저와 로그인된 유저 비교하기
     try {
       const deal = await this.deal.findOne({ _id: dealId });
       if (!deal) {

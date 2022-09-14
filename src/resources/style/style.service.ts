@@ -115,19 +115,16 @@ class StyleService {
   /**
    * Edit style
    */
+  // public async edit()
 
   /**
    * Delete style
    */
+  // TODO: checkStyleOwnerMiddle가 잘 작동하는지 error 확인하기
+  // TODO: update and delete의 error catch는 어떻게 하는지 알아보기
+  // TODO: catch부분 바꾸기
   public async delete(styleId: string, userId: Types.ObjectId): Promise<void> {
     try {
-      const style = await this.style.findById(styleId);
-      if (!style) {
-        throw new Error('Style not found');
-      }
-      if (!userId.equals(style.owner)) {
-        throw new Error('This style is not yours');
-      }
       await this.user.findByIdAndUpdate(userId, {
         $pull: { styles: styleId },
       });

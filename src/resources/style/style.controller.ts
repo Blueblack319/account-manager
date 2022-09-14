@@ -7,6 +7,7 @@ import validationMiddleware from '@/middleware/validation.middleware';
 import validation from '@/resources/style/style.validation';
 import HttpException from '@/utils/exceptions/http.exception';
 import authenticatedMiddleware from '@/middleware/authenticated.middleware';
+import { checkStyleOwnerMiddleware } from '@/middleware/authorization.middleware';
 
 class StyleController implements Controller {
   public path = '/styles';
@@ -27,9 +28,16 @@ class StyleController implements Controller {
     this.router.get(`${this.path}/all`, this.findAll);
     this.router.get(`${this.path}/:id`, authenticatedMiddleware, this.findById);
     this.router.get(this.path, this.findByTitle);
+    this.router.put(
+      `${this.path}/:id`,
+      authenticatedMiddleware,
+      checkStyleOwnerMiddleware,
+      this.edit
+    );
     this.router.delete(
       `${this.path}/:id`,
       authenticatedMiddleware,
+      checkStyleOwnerMiddleware,
       this.delete
     );
   }
@@ -100,6 +108,16 @@ class StyleController implements Controller {
         next(new HttpException(400, e.message));
       }
     }
+  };
+
+  private edit = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      // TODO:
+    } catch (e) {}
   };
 
   private delete = async (

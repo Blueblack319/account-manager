@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 
 interface Ticker {
   ticker: string;
-  buying: boolean;
+  isBuying: boolean;
   count: number;
   price: number;
 }

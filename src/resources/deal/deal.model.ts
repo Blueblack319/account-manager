@@ -7,7 +7,7 @@ const TickerSchema = new Schema(
       type: String,
       required: true,
     },
-    buying: {
+    isBuying: {
       type: Boolean,
       required: true,
     },
