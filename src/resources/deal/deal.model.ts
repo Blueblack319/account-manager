@@ -36,4 +36,18 @@ export const DealSchema = new Schema({
   tickers: [TickerSchema],
 });
 
+// 로그인된 유저id를 찾을 수가 없네...middleware를 만들자
+// DealSchema.pre(
+//   'deleteOne',
+//   { document: true },
+//   async function (next): Promise<void> {
+//     try {
+//       const user = await UserModel.findOne({
+//         styles: { $in: this.style },
+//       });
+//       console.log(user);
+//     } catch (e) {}
+//   }
+// );
+
 export default model<Deal>('Deal', DealSchema);

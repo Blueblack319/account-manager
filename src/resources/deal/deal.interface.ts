@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 interface Ticker {
   ticker: string;
   buying: boolean;
@@ -6,6 +8,7 @@ interface Ticker {
 }
 
 interface Deal {
+  style: Types.ObjectId;
   description: string;
   tickers: Ticker[];
 }

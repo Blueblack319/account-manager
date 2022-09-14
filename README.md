@@ -53,4 +53,5 @@ DB
 - [x] style schema에 owner 추가하기
 - [x] name이 같은 style은 못 만들게 하자
 - [x] style의 owner와 로그인한 유저가 같을때만 deal create
-- [ ] delete cascade
+- [x] delete cascade
+- [ ] authorizationMiddleware를 이용해서 deal delete권한 주기 => reusable한게 아니므로 그냥 service에서 처리하자

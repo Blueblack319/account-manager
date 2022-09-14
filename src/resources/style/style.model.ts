@@ -1,7 +1,5 @@
 import { Schema, model, Types, Query } from 'mongoose';
 import { Style } from '@/resources/style/style.interface';
-import Deal from '@/resources/deal/deal.model';
-import User from '@/resources/user/user.model';
 
 const StyleSchema = new Schema({
   owner: {
