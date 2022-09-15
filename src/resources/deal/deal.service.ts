@@ -26,9 +26,9 @@ class DealService {
       }
       tickers.forEach((ticker) => {
         if (ticker.isBuying) {
-          totalPrice += ticker.price;
+          totalPrice += ticker.price * ticker.count;
         } else {
-          totalPrice -= ticker.price;
+          totalPrice -= ticker.price * ticker.count;
         }
       });
       const deal = await this.deal.create({
