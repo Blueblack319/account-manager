@@ -24,6 +24,10 @@ const StyleSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  totalBuyingPrice: {
+    type: Number,
+    required: true,
+  },
   deals: [
     {
       type: Types.ObjectId,

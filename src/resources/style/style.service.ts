@@ -1,4 +1,8 @@
-import { EditStyleInput, Style } from '@/resources/style/style.interface';
+import {
+  CreateStyleInput,
+  EditStyleInput,
+  Style,
+} from '@/resources/style/style.interface';
 import { Types } from 'mongoose';
 import StyleModel from '@/resources/style/style.model';
 import UserModel from '@/resources/user/user.model';
@@ -12,16 +16,15 @@ class StyleService {
    * Create a new style
    */
   public async create(
-    name: string,
-    description: string,
-    owner: Types.ObjectId
+    owner: Types.ObjectId,
+    createStyleInput: CreateStyleInput
   ): Promise<Style | void> {
     try {
       const existed = await this.style.findOne({ name }).select('_id');
       if (existed) {
         throw new Error('Already exist');
       }
-      const style = await this.style.create({ owner, name, description });
+      const style = await this.style.create({ owner, ...createStyleInput });
       await this.user
         .findByIdAndUpdate(owner, {
           $push: { styles: style._id },
