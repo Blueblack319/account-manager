@@ -120,9 +120,6 @@ class StyleService {
   /**
    * Delete style
    */
-  // TODO: checkStyleOwnerMiddle가 잘 작동하는지 error 확인하기
-  // TODO: update and delete의 error catch는 어떻게 하는지 알아보기
-  // TODO: catch부분 바꾸기
   public async delete(styleId: string, userId: Types.ObjectId): Promise<void> {
     try {
       await this.user.findByIdAndUpdate(userId, {
