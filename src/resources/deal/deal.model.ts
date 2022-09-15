@@ -1,5 +1,6 @@
 import { Schema, model, Types } from 'mongoose';
 import { Deal } from '@/resources/deal/deal.interface';
+import StyleModel from '@/resources/style/style.model';
 
 const TickerSchema = new Schema(
   {
@@ -31,23 +32,38 @@ export const DealSchema = new Schema({
   },
   description: {
     type: String,
-    requied: true,
+    required: true,
+  },
+  totalPrice: {
+    type: Number,
+    required: true,
   },
   tickers: [TickerSchema],
 });
 
-// 로그인된 유저id를 찾을 수가 없네...middleware를 만들자
-// DealSchema.pre(
-//   'deleteOne',
-//   { document: true },
-//   async function (next): Promise<void> {
-//     try {
-//       const user = await UserModel.findOne({
-//         styles: { $in: this.style },
-//       });
-//       console.log(user);
-//     } catch (e) {}
-//   }
-// );
+// 기존 값 빼주기
+DealSchema.pre(
+  ['updateOne', 'save', 'deleteOne'],
+  { document: true },
+  async function (next): Promise<void> {
+    try {
+      // console.log(this.totalPrice)
+    } catch (e) {}
+  }
+);
+
+// 새로운 값 더해주기
+DealSchema.post(
+  ['updateOne', 'save'],
+  { document: true },
+  async function (next): Promise<void> {
+    try {
+      // style을 찾아서 totalBuyingPrice를 바꿔주자
+
+      const style = await StyleModel.findById(this.style);
+      console.log(user);
+    } catch (e) {}
+  }
+);
 
 export default model<Deal>('Deal', DealSchema);
