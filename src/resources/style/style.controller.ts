@@ -28,7 +28,7 @@ class StyleController implements Controller {
     this.router.get(`${this.path}/all`, this.findAll);
     this.router.get(`${this.path}/:id`, authenticatedMiddleware, this.findById);
     this.router.get(this.path, this.findByTitle);
-    this.router.put(
+    this.router.patch(
       `${this.path}/:id`,
       authenticatedMiddleware,
       checkStyleOwnerMiddleware,
@@ -116,8 +116,18 @@ class StyleController implements Controller {
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      // TODO:
-    } catch (e) {}
+      console.log('here');
+      const payload = req.body;
+      const { id } = req.params;
+      console.log(payload);
+      console.log(id);
+      await this.StyleService.edit(id, payload);
+      res.status(200).json({ isSuccess: true });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
   };
 
   private delete = async (

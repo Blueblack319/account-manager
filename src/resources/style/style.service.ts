@@ -1,4 +1,4 @@
-import { Style } from '@/resources/style/style.interface';
+import { EditStyleInput, Style } from '@/resources/style/style.interface';
 import { Types } from 'mongoose';
 import StyleModel from '@/resources/style/style.model';
 import UserModel from '@/resources/user/user.model';
@@ -115,7 +115,20 @@ class StyleService {
   /**
    * Edit style
    */
-  // public async edit()
+  public async edit(
+    styleId: string,
+    editStyleInput: EditStyleInput
+  ): Promise<void> {
+    try {
+      await this.style.findByIdAndUpdate(styleId, {
+        ...editStyleInput,
+      });
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message ? e.message : 'Unable to edit style');
+      }
+    }
+  }
 
   /**
    * Delete style

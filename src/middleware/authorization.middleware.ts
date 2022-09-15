@@ -17,6 +17,7 @@ async function checkStyleOwnerMiddleware(
     if (!userId.equals(style.owner)) {
       throw new Error('This sytle is not yours');
     }
+    next();
   } catch (e) {
     if (e instanceof Error) {
       next(new HttpException(400, e.message));

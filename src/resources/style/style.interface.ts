@@ -19,4 +19,9 @@ interface NameQuery {
   name: string;
 }
 
-export { Style, NameQuery };
+interface EditStyleInput {
+  name?: string;
+  description?: string;
+}
+
+export { Style, NameQuery, EditStyleInput };
