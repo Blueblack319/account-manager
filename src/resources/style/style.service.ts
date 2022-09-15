@@ -20,7 +20,9 @@ class StyleService {
     createStyleInput: CreateStyleInput
   ): Promise<Style | void> {
     try {
-      const existed = await this.style.findOne({ name }).select('_id');
+      const existed = await this.style
+        .findOne({ name: createStyleInput.name })
+        .select('_id');
       if (existed) {
         throw new Error('Already exist');
       }

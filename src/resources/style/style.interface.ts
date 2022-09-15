@@ -25,6 +25,8 @@ interface CreateStyleInput {
 interface EditStyleInput {
   name?: string;
   description?: string;
+  isShared?: boolean;
+  isAnonym?: boolean;
 }
 
 export { Style, NameQuery, CreateStyleInput, EditStyleInput };

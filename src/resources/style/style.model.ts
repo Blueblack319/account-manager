@@ -17,7 +17,7 @@ const StyleSchema = new Schema({
     required: true,
   },
   isShared: {
-    trype: Boolean,
+    type: Boolean,
     required: true,
   },
   isAnonym: {
@@ -27,6 +27,7 @@ const StyleSchema = new Schema({
   totalBuyingPrice: {
     type: Number,
     required: true,
+    default: 0,
   },
   deals: [
     {

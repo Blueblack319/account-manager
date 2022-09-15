@@ -21,7 +21,7 @@ class StyleController implements Controller {
   private initializeRoutes(): void {
     this.router.post(
       this.path,
-      validationMiddleware(validation.create),
+      validationMiddleware(validation.createVal),
       authenticatedMiddleware,
       this.create
     );
@@ -30,6 +30,7 @@ class StyleController implements Controller {
     this.router.get(this.path, this.findByTitle);
     this.router.patch(
       `${this.path}/:id`,
+      validationMiddleware(validation.editVal),
       authenticatedMiddleware,
       checkStyleOwnerMiddleware,
       this.edit
@@ -116,11 +117,8 @@ class StyleController implements Controller {
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      console.log('here');
       const payload = req.body;
       const { id } = req.params;
-      console.log(payload);
-      console.log(id);
       await this.StyleService.edit(id, payload);
       res.status(200).json({ isSuccess: true });
     } catch (e) {
