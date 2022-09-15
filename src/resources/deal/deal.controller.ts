@@ -52,6 +52,7 @@ class DealController implements Controller {
       const userId = req.userId;
       const { id } = req.params; // dealId
       await this.DealService.delete(userId, id);
+      res.status(200).send('Success');
     } catch (e) {
       if (e instanceof Error) {
         next(new HttpException(400, e.message));

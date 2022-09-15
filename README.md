@@ -65,4 +65,4 @@ DB
 - [ ] deal이 추가, 삭제 혹은 변경될 때마다 style의 총매입단가는 바뀌어야 함
 - [x] style에 isShared 필드를 추가하여 공개/비공개 처리
 - [x] style에 isAnonym 필드를 추가하여 익명/실명 처리
-- [ ] deal의 totalPrice 처리
+- [x] deal의 totalPrice 처리

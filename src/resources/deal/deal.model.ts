@@ -41,6 +41,7 @@ export const DealSchema = new Schema({
   tickers: [TickerSchema],
 });
 
+// TODO: totalPrice가 바뀌었다면 style의 totalBuyingPrice 변화주기
 // 기존 값 빼주기
 DealSchema.pre(
   ['updateOne', 'save', 'deleteOne'],
