@@ -55,7 +55,7 @@ DB
 - [x] style의 owner와 로그인한 유저가 같을때만 deal create
 - [x] delete cascade
 - [x] authorizationMiddleware를 이용해서 deal delete권한 주기 => reusable한게 아니므로 그냥 service에서 처리하자
-- [ ] Edit Style
-- [ ] style에 평균매입단가 필드추가 => deal을 추가할 때 update
-- [ ] style에 isShared 필드를 추가하여 공개/비공개 처리
-- [ ] style에 isAnonym 필드를 추가하여 익명/실명 처리
+- [x] Edit Style
+- [ ] style에 총매입단가 필드추가 => deal을 추가할 때 update
+- [x] style에 isShared 필드를 추가하여 공개/비공개 처리
+- [x] style에 isAnonym 필드를 추가하여 익명/실명 처리

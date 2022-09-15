@@ -6,6 +6,8 @@ interface Style {
   owner: Types.ObjectId;
   name: string;
   description: string;
+  isShared: boolean;
+  isAnonym: boolean;
 
   // 종목과 수만 저장하고 나중에 realtime으로 가격을 받아오자
   //   totalAvgCurPrice: number;
