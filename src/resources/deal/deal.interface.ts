@@ -10,7 +10,13 @@ interface Ticker {
 interface Deal {
   style: Types.ObjectId;
   description: string;
+  totalPrice: number;
   tickers: Ticker[];
 }
 
-export { Ticker, Deal };
+interface CreateDealInput {
+  description: string;
+  tickers: Ticker[];
+}
+
+export { Ticker, Deal, CreateDealInput };

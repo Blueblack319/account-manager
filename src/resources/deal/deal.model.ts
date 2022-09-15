@@ -61,7 +61,7 @@ DealSchema.post(
       // style을 찾아서 totalBuyingPrice를 바꿔주자
 
       const style = await StyleModel.findById(this.style);
-      console.log(user);
+      console.log(style);
     } catch (e) {}
   }
 );

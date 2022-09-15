@@ -29,14 +29,9 @@ class DealController implements Controller {
   ): Promise<Response | void> => {
     try {
       const { id } = req.params;
-      const { description, tickers } = req.body;
+      const payload = req.body;
       const userId = req.userId.toString();
-      const deal = await this.DealService.create(
-        id,
-        userId,
-        description,
-        tickers
-      );
+      const deal = await this.DealService.create(id, userId, payload);
       res.status(201).json({ deal });
     } catch (e) {
       if (e instanceof Error) {

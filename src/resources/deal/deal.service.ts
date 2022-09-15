@@ -1,4 +1,4 @@
-import { Deal, Ticker } from '@/resources/deal/deal.interface';
+import { CreateDealInput, Deal, Ticker } from '@/resources/deal/deal.interface';
 import { Types } from 'mongoose';
 import DealModel from '@/resources/deal/deal.model';
 import StyleModel from '@/resources/style/style.model';
@@ -15,18 +15,27 @@ class DealService {
   public async create(
     styleId: string,
     userId: string,
-    description: string,
-    tickers: Ticker[]
+    createDealInput: CreateDealInput
   ): Promise<Deal | void> {
     try {
       const style = await this.style.findOne({ owner: userId, _id: styleId });
+      let totalPrice = 0;
+      const { description, tickers } = createDealInput;
       if (!style) {
         throw new Error('This style is not yours');
       }
+      tickers.forEach((ticker) => {
+        if (ticker.isBuying) {
+          totalPrice += ticker.price;
+        } else {
+          totalPrice -= ticker.price;
+        }
+      });
       const deal = await this.deal.create({
         style: styleId,
         description,
         tickers,
+        totalPrice,
       });
       style.deals?.push(deal);
       style.save();
