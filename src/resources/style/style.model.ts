@@ -1,5 +1,6 @@
 import { Schema, model, Types, Query } from 'mongoose';
 import { Style } from '@/resources/style/style.interface';
+import DealModel from '@/resources/deal/deal.model';
 
 const StyleSchema = new Schema({
   owner: {
@@ -29,17 +30,17 @@ const StyleSchema = new Schema({
   ],
 });
 
-// StyleSchema.pre('deleteOne', async function (next): Promise<void> {
-//   try {
-//     await Deal.deleteMany({ style: this._id });
-//     // 왜 안되지??
-// 아마도 pull을 잘못쓴듯..
-//     const user = await User.findById(this.owner);
-//     console.log(user);
-//     next();
-//   } catch (e) {
-//     console.log(e);
-//   }
-// });
+StyleSchema.post(
+  'deleteOne',
+  { document: true },
+  async function (next): Promise<void> {
+    try {
+      await DealModel.deleteMany({ style: this._id });
+    } catch (e) {
+      // TODO: 에러처리 어떻게?
+      console.log(e);
+    }
+  }
+);
 
 export default model<Style>('Style', StyleSchema);
