@@ -1,6 +1,7 @@
 import { Schema, model, Types } from 'mongoose';
 import { Deal } from '@/resources/deal/deal.interface';
 import StyleModel from '@/resources/style/style.model';
+import HttpException from '@/utils/exceptions/http.exception';
 
 const TickerSchema = new Schema(
   {
@@ -44,12 +45,29 @@ export const DealSchema = new Schema({
 // TODO: totalPrice가 바뀌었다면 style의 totalBuyingPrice 변화주기
 // 기존 값 빼주기
 DealSchema.pre(
-  ['updateOne', 'save', 'deleteOne'],
+  ['updateOne', 'deleteOne', 'remove'],
   { document: true },
   async function (next): Promise<void> {
     try {
-      // console.log(this.totalPrice)
-    } catch (e) {}
+      const style = await StyleModel.findById(this.style);
+      if (!style) {
+        throw new Error('Style not found');
+      }
+      console.log(style.totalBuyingPrice);
+      style.totalBuyingPrice -= this.totalPrice;
+      console.log(style.totalBuyingPrice);
+      style.save();
+      next();
+    } catch (e) {
+      if (e instanceof Error) {
+        next(
+          new HttpException(
+            400,
+            e.message ? e.message : 'Unable to calculate totalBuyingPrice'
+          )
+        );
+      }
+    }
   }
 );
 
@@ -60,10 +78,17 @@ DealSchema.post(
   async function (next): Promise<void> {
     try {
       // style을 찾아서 totalBuyingPrice를 바꿔주자
-
       const style = await StyleModel.findById(this.style);
-      console.log(style);
-    } catch (e) {}
+      if (!style) {
+        throw new Error('Style not found');
+      }
+      console.log(style.totalBuyingPrice);
+      style.totalBuyingPrice += this.totalPrice;
+      console.log(style.totalBuyingPrice);
+      style.save();
+    } catch (e) {
+      console.log(e);
+    }
   }
 );
 
