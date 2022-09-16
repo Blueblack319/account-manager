@@ -28,6 +28,7 @@ class UserController implements Controller {
       validationMiddleware(validation.login),
       this.login
     );
+    this.router.get(`${this.path}/all`, this.findAll);
     this.router.get(
       `${this.path}/styles`,
       authenticatedMiddleware,
@@ -110,7 +111,20 @@ class UserController implements Controller {
     }
   };
 
-  // private findAll
+  private findAll = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const users = await this.UserService.findAll();
+      return res.status(200).json({ users });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
 
   private findById = async (
     req: Request,
