@@ -28,11 +28,15 @@ class UserController implements Controller {
       validationMiddleware(validation.login),
       this.login
     );
-    this.router.get(this.path, authenticatedMiddleware, this.getUser);
     this.router.get(
       `${this.path}/styles`,
       authenticatedMiddleware,
       this.findAllInUser
+    );
+    this.router.get(
+      `${this.path}/profile`,
+      authenticatedMiddleware,
+      this.getLoggedInUser
     );
   }
 
@@ -73,17 +77,6 @@ class UserController implements Controller {
     }
   };
 
-  private getUser = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Response | void => {
-    if (!req.userId) {
-      next(new HttpException(400, 'Not logged in user'));
-    }
-    res.status(200).send({ data: req.userId });
-  };
-
   private findAllInUser = async (
     req: Request,
     res: Response,
@@ -93,6 +86,22 @@ class UserController implements Controller {
       const userId = req.userId;
       const styles = await this.StyleService.findAllInUser(userId);
       return res.status(200).json({ styles });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
+
+  private getLoggedInUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const userId = req.userId;
+      const user = await this.UserService.getLoggedInUser(userId);
+      return res.status(200).json({ user });
     } catch (e) {
       if (e instanceof Error) {
         next(new HttpException(400, e.message));

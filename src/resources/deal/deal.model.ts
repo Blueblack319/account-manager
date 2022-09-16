@@ -62,9 +62,7 @@ DealSchema.post(
       if (!style) {
         throw new Error('Style not found');
       }
-      console.log(style.totalBuyingPrice);
       style.totalBuyingPrice += this.totalPrice;
-      console.log(style.totalBuyingPrice);
       style.save();
     } catch (e) {
       console.log(e);
@@ -78,13 +76,10 @@ DealSchema.post(
   async function (next): Promise<void> {
     try {
       const style = await StyleModel.findById(this.style);
-      console.log('here');
       if (!style) {
         throw new Error('Style not found');
       }
-      console.log(style.totalBuyingPrice);
       style.totalBuyingPrice -= this.totalPrice;
-      console.log(style.totalBuyingPrice);
       style.save();
     } catch (e) {
       console.log(e);

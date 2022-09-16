@@ -46,11 +46,8 @@ class DealController implements Controller {
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      // cascade style과만 하면 됨.
-      // deal이 속해있는 style인지 확인하기
-      // 그 style을 소유하고 있는 유저와 로그인된 유저 비교하기
       const userId = req.userId;
-      const { id } = req.params; // dealId
+      const { id } = req.params;
       await this.DealService.delete(userId, id);
       res.status(200).send('Success');
     } catch (e) {
