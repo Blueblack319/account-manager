@@ -44,36 +44,16 @@ export const DealSchema = new Schema({
 
 // TODO: totalPrice가 바뀌었다면 style의 totalBuyingPrice 변화주기
 // 기존 값 빼주기
-DealSchema.pre(
-  ['updateOne', 'deleteOne', 'remove'],
-  { document: true },
-  async function (next): Promise<void> {
-    try {
-      const style = await StyleModel.findById(this.style);
-      if (!style) {
-        throw new Error('Style not found');
-      }
-      console.log(style.totalBuyingPrice);
-      style.totalBuyingPrice -= this.totalPrice;
-      console.log(style.totalBuyingPrice);
-      style.save();
-      next();
-    } catch (e) {
-      if (e instanceof Error) {
-        next(
-          new HttpException(
-            400,
-            e.message ? e.message : 'Unable to calculate totalBuyingPrice'
-          )
-        );
-      }
-    }
-  }
-);
+// pre가 작동안함...
+// DealSchema.pre(
+//   ['deleteOne'],
+//   { document: true, query: false },
+//   async function (next): Promise<void> {}
+// );
 
 // 새로운 값 더해주기
 DealSchema.post(
-  ['updateOne', 'save'],
+  ['save'],
   { document: true },
   async function (next): Promise<void> {
     try {
@@ -88,6 +68,34 @@ DealSchema.post(
       style.save();
     } catch (e) {
       console.log(e);
+    }
+  }
+);
+
+DealSchema.post(
+  'deleteOne',
+  { document: true, query: false },
+  async function (next): Promise<void> {
+    try {
+      const style = await StyleModel.findById(this.style);
+      console.log('here');
+      if (!style) {
+        throw new Error('Style not found');
+      }
+      console.log(style.totalBuyingPrice);
+      style.totalBuyingPrice -= this.totalPrice;
+      console.log(style.totalBuyingPrice);
+      style.save();
+    } catch (e) {
+      console.log(e);
+      // if (e instanceof Error) {
+      //   next(
+      //     new HttpException(
+      //       400,
+      //       e.message ? e.message : 'Unable to calculate totalBuyingPrice'
+      //     )
+      //   );
+      // }
     }
   }
 );

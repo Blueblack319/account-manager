@@ -70,7 +70,7 @@ class DealService {
         { _id: deal.style },
         { $pull: { deals: dealId } }
       );
-      await this.deal.deleteOne({ _id: dealId });
+      await deal.deleteOne();
     } catch (e) {
       if (e instanceof Error) {
         throw new Error(e.message ? e.message : 'Unable to remove a deal');
