@@ -55,7 +55,9 @@ class StyleService {
   /**
    * Find all styles in user
    */
-  public async findAllInUser(userId: Types.ObjectId): Promise<Style[] | void> {
+  public async findAllStyleInUser(
+    userId: Types.ObjectId
+  ): Promise<Style[] | void> {
     try {
       const user = await this.user
         .findById(userId)

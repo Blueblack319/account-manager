@@ -71,3 +71,4 @@ DB
 - [ ] user delete
 - [ ] deal update
 - [ ] deal find
+- [ ] 모든 request에 validation 확인하기

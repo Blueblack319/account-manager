@@ -22,6 +22,15 @@ const UserSchema = new Schema(
     role: {
       type: String,
       required: true,
+      default: 'user',
+    },
+    isShared: {
+      type: Boolean,
+      required: true,
+    },
+    isAnonym: {
+      type: Boolean,
+      required: true,
     },
     styles: [
       {
@@ -43,7 +52,9 @@ UserSchema.pre('save', async function (next) {
 });
 
 // Cascade
-// UserSchema.pre('remove', )
+UserSchema.post('deleteOne', { document: true }, async function (next) {
+  console.log(this.styles);
+});
 
 // arrow function은 후순위로 생김
 // 그래서 arrow function을 쓰면 에러가 발생하나?

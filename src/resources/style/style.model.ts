@@ -16,14 +16,6 @@ const StyleSchema = new Schema({
     type: String,
     required: true,
   },
-  isShared: {
-    type: Boolean,
-    required: true,
-  },
-  isAnonym: {
-    type: Boolean,
-    required: true,
-  },
   totalBuyingPrice: {
     type: Number,
     required: true,

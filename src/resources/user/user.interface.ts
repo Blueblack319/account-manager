@@ -8,10 +8,26 @@ interface User {
   name: string;
   password: string;
   role: string;
+  isShared: boolean;
+  isAnonym: boolean;
   styles: Style[];
 
   // methods
   isValidPassword(password: string): Promise<Error | boolean>;
 }
 
-export { User };
+interface RegisterInput {
+  email: string;
+  name: string;
+  password: string;
+  role?: string;
+  isShared: boolean;
+  isAnonym: boolean;
+}
+
+interface LoginInput {
+  email: string;
+  password: string;
+}
+
+export { User, RegisterInput, LoginInput };

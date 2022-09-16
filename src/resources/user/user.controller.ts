@@ -31,12 +31,18 @@ class UserController implements Controller {
     this.router.get(
       `${this.path}/styles`,
       authenticatedMiddleware,
-      this.findAllInUser
+      this.findAllStyleInUser
     );
     this.router.get(
       `${this.path}/profile`,
       authenticatedMiddleware,
       this.getLoggedInUser
+    );
+    this.router.get(`${this.path}/:id`, authenticatedMiddleware, this.findById);
+    this.router.delete(
+      `${this.path}/loggedIn`,
+      authenticatedMiddleware,
+      this.deleteLoggedInUser
     );
   }
 
@@ -46,13 +52,8 @@ class UserController implements Controller {
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      const { email, name, password } = req.body;
-      const token = await this.UserService.register(
-        email,
-        name,
-        password,
-        'user'
-      );
+      const payload = req.body;
+      const token = await this.UserService.register(payload);
       res.status(201).json({ token });
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -67,8 +68,8 @@ class UserController implements Controller {
     next: NextFunction
   ): Promise<Response | void> => {
     try {
-      const { email, password } = req.body;
-      const token = await this.UserService.login(email, password);
+      const payload = req.body;
+      const token = await this.UserService.login(payload);
       res.status(200).json({ token });
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -77,14 +78,14 @@ class UserController implements Controller {
     }
   };
 
-  private findAllInUser = async (
+  private findAllStyleInUser = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response | void> => {
     try {
       const userId = req.userId;
-      const styles = await this.StyleService.findAllInUser(userId);
+      const styles = await this.StyleService.findAllStyleInUser(userId);
       return res.status(200).json({ styles });
     } catch (e) {
       if (e instanceof Error) {
@@ -102,6 +103,40 @@ class UserController implements Controller {
       const userId = req.userId;
       const user = await this.UserService.getLoggedInUser(userId);
       return res.status(200).json({ user });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
+
+  // private findAll
+
+  private findById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const { id } = req.params;
+      const user = await this.UserService.findById(id);
+      return res.status(200).json({ user });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
+
+  private deleteLoggedInUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const userId = req.userId;
+      await this.UserService.deleteLoggedInUser(userId);
+      return res.status(200).send('Success');
     } catch (e) {
       if (e instanceof Error) {
         next(new HttpException(400, e.message));

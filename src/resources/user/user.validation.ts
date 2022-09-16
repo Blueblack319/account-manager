@@ -9,6 +9,9 @@ const register = Joi.object({
     })
     .required(),
   password: Joi.string().min(6).required(),
+  role: Joi.string().max(20),
+  isShared: Joi.boolean().required(),
+  isAnonym: Joi.boolean().required(),
 });
 
 const login = Joi.object({
