@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { User } from '@/resources/user/user.interface';
 import bcrypt from 'bcrypt';
+import StyleModel from '@/resources/style/style.model';
 
 const UserSchema = new Schema(
   {
@@ -53,7 +54,17 @@ UserSchema.pre('save', async function (next) {
 
 // Cascade
 UserSchema.post('deleteOne', { document: true }, async function (next) {
-  console.log(this.styles);
+  const styles = this.styles;
+  if (!styles) {
+    return;
+  }
+  styles.forEach(async (styleId) => {
+    const style = await StyleModel.findById(styleId);
+    if (!style) {
+      return;
+    }
+    await style.deleteOne();
+  });
 });
 
 // arrow function은 후순위로 생김
