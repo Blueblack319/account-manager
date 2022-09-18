@@ -1,7 +1,12 @@
 import UserModel from '@/resources/user/user.model';
 import token from '@/utils/token';
 import { Types } from 'mongoose';
-import { LoginInput, RegisterInput, User } from './user.interface';
+import {
+  EditUserInput,
+  LoginInput,
+  RegisterInput,
+  User,
+} from './user.interface';
 
 class UserService {
   private user = UserModel;
@@ -46,6 +51,9 @@ class UserService {
     }
   }
 
+  /**
+   * Find logged in user
+   */
   public async getLoggedInUser(id: Types.ObjectId): Promise<User | void> {
     try {
       const user = await this.user.findById(id);
@@ -60,6 +68,9 @@ class UserService {
     }
   }
 
+  /**
+   * Find all users whose isShared is true
+   */
   public async findAll(): Promise<User[] | void> {
     try {
       const users = await this.user.find({ isShared: true });
@@ -71,6 +82,9 @@ class UserService {
     }
   }
 
+  /**
+   * Find a user by id
+   */
   public async findById(id: string): Promise<User | void> {
     try {
       // TODO: isAnonym 확인
@@ -86,6 +100,9 @@ class UserService {
     }
   }
 
+  /**
+   * Delete a logged in user
+   */
   public async deleteLoggedInUser(id: Types.ObjectId): Promise<void> {
     try {
       const user = await this.user.findById(id);
@@ -93,6 +110,45 @@ class UserService {
         throw new Error('User not found');
       }
       await user.deleteOne();
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
+  }
+
+  /**
+   * Update a logged in user
+   */
+  public async editUser(
+    id: Types.ObjectId,
+    editUserInput: EditUserInput
+  ): Promise<User | void> {
+    try {
+      await this.user.findByIdAndUpdate(id, {
+        ...editUserInput,
+      });
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
+  }
+
+  /**
+   * Update a logged in user's password
+   */
+  public async editUserPassword(
+    id: Types.ObjectId,
+    password: string
+  ): Promise<User | void> {
+    try {
+      const user = await this.user.findById(id);
+      if (!user) {
+        throw new Error('User not found');
+      }
+      user.password = password;
+      await user.save();
     } catch (e) {
       if (e instanceof Error) {
         throw new Error(e.message);

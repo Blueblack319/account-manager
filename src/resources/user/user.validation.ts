@@ -24,4 +24,21 @@ const login = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
-export default { register, login };
+const editUser = Joi.object({
+  name: Joi.string().max(30).required(),
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: ['com', 'net'] },
+    })
+    .required(),
+  role: Joi.string().max(20).required(),
+  isShared: Joi.boolean().required(),
+  isAnonym: Joi.boolean().required(),
+});
+
+const editUserPassword = Joi.object({
+  password: Joi.string().min(6).required(),
+});
+
+export default { register, login, editUser, editUserPassword };

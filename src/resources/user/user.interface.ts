@@ -30,4 +30,12 @@ interface LoginInput {
   password: string;
 }
 
-export { User, RegisterInput, LoginInput };
+interface EditUserInput {
+  email: string;
+  name: string;
+  role: string;
+  isShared: boolean;
+  isAnonym: boolean;
+}
+
+export { User, RegisterInput, LoginInput, EditUserInput };

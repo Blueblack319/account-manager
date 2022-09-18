@@ -40,6 +40,18 @@ class UserController implements Controller {
       this.getLoggedInUser
     );
     this.router.get(`${this.path}/:id`, authenticatedMiddleware, this.findById);
+    this.router.patch(
+      `${this.path}/profile`,
+      authenticatedMiddleware,
+      validationMiddleware(validation.editUser),
+      this.editUser
+    );
+    this.router.patch(
+      `${this.path}/profile/password`,
+      authenticatedMiddleware,
+      validationMiddleware(validation.editUserPassword),
+      this.editUserPassword
+    );
     this.router.delete(
       `${this.path}/loggedIn`,
       authenticatedMiddleware,
@@ -150,6 +162,40 @@ class UserController implements Controller {
     try {
       const userId = req.userId;
       await this.UserService.deleteLoggedInUser(userId);
+      return res.status(200).send('Success');
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
+
+  private editUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const userId = req.userId;
+      const payload = req.body;
+      await this.UserService.editUser(userId, payload);
+      return res.status(200).send('Success');
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
+
+  private editUserPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const userId = req.userId;
+      const { password } = req.body;
+      await this.UserService.editUserPassword(userId, password);
       return res.status(200).send('Success');
     } catch (e) {
       if (e instanceof Error) {

@@ -66,9 +66,11 @@ DB
 - [x] style에 isShared 필드를 추가하여 공개/비공개 처리
 - [x] style에 isAnonym 필드를 추가하여 익명/실명 처리
 - [x] deal의 totalPrice 처리
-- [ ] user find
+- [x] user find
 - [ ] user update
 - [ ] user delete
 - [ ] deal update
 - [ ] deal find
 - [ ] 모든 request에 validation 확인하기
+- [ ] isAnonym을 확인해서 처리하기
+- [ ] try-catch문에 대한 이해 부족
