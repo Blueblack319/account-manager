@@ -67,10 +67,10 @@ DB
 - [x] style에 isAnonym 필드를 추가하여 익명/실명 처리
 - [x] deal의 totalPrice 처리
 - [x] user find
-- [ ] user update
-- [ ] user delete
+- [x] user update
+- [x] user delete
 - [ ] deal update
-- [ ] deal find
+- [ ] deal find => deal을 찾을 필요가 있나?
 - [ ] 모든 request에 validation 확인하기
 - [ ] isAnonym을 확인해서 처리하기
 - [ ] try-catch문에 대한 이해 부족

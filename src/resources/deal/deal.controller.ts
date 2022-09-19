@@ -3,6 +3,7 @@ import Controller from '@/utils/interfaces/controller.interface';
 import DealService from '@/resources/deal/deal.service';
 import HttpException from '@/utils/exceptions/http.exception';
 import authenticatedMiddleware from '@/middleware/authenticated.middleware';
+import { checkDealStyleMiddleware } from '@/middleware/authorization.middleware';
 
 class DealController implements Controller {
   public path = '/deal';
@@ -18,6 +19,7 @@ class DealController implements Controller {
     this.router.delete(
       `${this.path}/:id`,
       authenticatedMiddleware,
+      checkDealStyleMiddleware,
       this.delete
     );
   }
