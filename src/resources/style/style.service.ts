@@ -20,6 +20,7 @@ class StyleService {
     createStyleInput: CreateStyleInput
   ): Promise<Style | void> {
     try {
+      console.log('test');
       const existed = await this.style
         .findOne({ name: createStyleInput.name })
         .select('_id');
