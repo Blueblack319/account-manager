@@ -1,7 +1,6 @@
 import { Schema, model, Types } from 'mongoose';
 import { Deal } from '@/resources/deal/deal.interface';
 import StyleModel from '@/resources/style/style.model';
-import HttpException from '@/utils/exceptions/http.exception';
 
 const TickerSchema = new Schema(
   {

@@ -8,6 +8,7 @@
 - 타인의 투자스타일을 볼 수 도 있게?
 - 투자동아리에 맞는 어플리케이션 제작?
 - 수익률이 높은 스타일에서 낮은 스타일로 내림차순 보이기
+- 해당 deal에 대한 의견 주고받기 => comments 기능
 
 시나리오
 
@@ -69,8 +70,7 @@ DB
 - [x] user find
 - [x] user update
 - [x] user delete
-- [ ] deal update
-- [ ] deal find => deal을 찾을 필요가 있나?
 - [ ] 모든 request에 validation 확인하기
 - [ ] isAnonym을 확인해서 처리하기
 - [ ] try-catch문에 대한 이해 부족
+- [ ]
