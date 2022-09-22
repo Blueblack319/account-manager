@@ -9,9 +9,6 @@ const register = Joi.object({
     })
     .required(),
   password: Joi.string().min(6).required(),
-  role: Joi.string().max(20),
-  isShared: Joi.boolean().required(),
-  isAnonym: Joi.boolean().required(),
 });
 
 const login = Joi.object({
@@ -32,9 +29,6 @@ const editUser = Joi.object({
       tlds: { allow: ['com', 'net'] },
     })
     .required(),
-  role: Joi.string().max(20).required(),
-  isShared: Joi.boolean().required(),
-  isAnonym: Joi.boolean().required(),
 });
 
 const editUserPassword = Joi.object({

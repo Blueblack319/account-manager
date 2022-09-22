@@ -7,9 +7,6 @@ interface User {
   email: string;
   name: string;
   password: string;
-  role: string;
-  isShared: boolean;
-  isAnonym: boolean;
   styles: Style[];
 
   // methods
@@ -20,9 +17,6 @@ interface RegisterInput {
   email: string;
   name: string;
   password: string;
-  role?: string;
-  isShared: boolean;
-  isAnonym: boolean;
 }
 
 interface LoginInput {
@@ -33,9 +27,6 @@ interface LoginInput {
 interface EditUserInput {
   email: string;
   name: string;
-  role: string;
-  isShared: boolean;
-  isAnonym: boolean;
 }
 
 export { User, RegisterInput, LoginInput, EditUserInput };

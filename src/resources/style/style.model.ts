@@ -22,6 +22,14 @@ const StyleSchema = new Schema({
     required: true,
     default: 0,
   },
+  isShared: {
+    type: Boolean,
+    required: true,
+  },
+  isAnonym: {
+    type: Boolean,
+    required: true,
+  },
   deals: [
     {
       type: Types.ObjectId,

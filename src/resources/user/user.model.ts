@@ -20,19 +20,6 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    role: {
-      type: String,
-      required: true,
-      default: 'user',
-    },
-    isShared: {
-      type: Boolean,
-      required: true,
-    },
-    isAnonym: {
-      type: Boolean,
-      required: true,
-    },
     styles: [
       {
         type: Schema.Types.ObjectId,
