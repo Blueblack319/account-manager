@@ -13,6 +13,7 @@ interface User {
   isValidPassword(password: string): Promise<Error | boolean>;
 }
 
+// inter
 interface SignupInput {
   email: string;
   name: string;
