@@ -3,8 +3,8 @@ import token from '@/utils/token';
 import { Types } from 'mongoose';
 import {
   EditUserInput,
-  LoginInput,
-  RegisterInput,
+  SigninInput,
+  SignupInput,
   User,
 } from './user.interface';
 
@@ -14,16 +14,14 @@ class UserService {
   /**
    * Register a new user
    */
-  public async register(
-    registerInput: RegisterInput
-  ): Promise<string | undefined> {
+  public async signup(registerInput: SignupInput): Promise<string | undefined> {
     try {
       const user = await this.user.create({ ...registerInput });
       const accessToken = token.createToken(user._id);
       return accessToken;
     } catch (e) {
       if (e instanceof Error) {
-        throw new Error(e.message ? e.message : 'Unable to register');
+        throw new Error(e.message ? e.message : 'Unable to signup');
       }
     }
   }
@@ -31,9 +29,9 @@ class UserService {
   /**
    * Login user
    */
-  public async login(loginInput: LoginInput): Promise<string | void> {
+  public async signin(signinInput: SigninInput): Promise<string | void> {
     try {
-      const { email, password } = loginInput;
+      const { email, password } = signinInput;
       const user = await this.user.findOne({ email });
       if (!user) {
         throw new Error('User not found with that email');
@@ -46,7 +44,7 @@ class UserService {
       }
     } catch (e) {
       if (e instanceof Error) {
-        throw new Error(e.message ? e.message : 'Unable to login');
+        throw new Error(e.message ? e.message : 'Unable to signin');
       }
     }
   }

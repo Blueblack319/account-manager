@@ -19,14 +19,14 @@ class UserController implements Controller {
 
   private initializeRoutes(): void {
     this.router.post(
-      `${this.path}/register`,
-      validationMiddleware(validation.register),
-      this.register
+      '/signup',
+      validationMiddleware(validation.signup),
+      this.signup
     );
     this.router.post(
-      `${this.path}/login`,
-      validationMiddleware(validation.login),
-      this.login
+      '/signin',
+      validationMiddleware(validation.signin),
+      this.signin
     );
     this.router.get(`${this.path}/all`, this.findAll);
     this.router.get(
@@ -34,11 +34,7 @@ class UserController implements Controller {
       authenticatedMiddleware,
       this.findAllStyleInUser
     );
-    this.router.get(
-      `${this.path}/profile`,
-      authenticatedMiddleware,
-      this.getLoggedInUser
-    );
+    this.router.get('/profile', authenticatedMiddleware, this.getLoggedInUser);
     this.router.get(`${this.path}/:id`, authenticatedMiddleware, this.findById);
     this.router.patch(
       `${this.path}/profile`,
@@ -59,14 +55,14 @@ class UserController implements Controller {
     );
   }
 
-  private register = async (
+  private signup = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response | void> => {
     try {
       const payload = req.body;
-      const token = await this.UserService.register(payload);
+      const token = await this.UserService.signup(payload);
       res.status(201).json({ token });
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -75,14 +71,14 @@ class UserController implements Controller {
     }
   };
 
-  private login = async (
+  private signin = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response | void> => {
     try {
       const payload = req.body;
-      const token = await this.UserService.login(payload);
+      const token = await this.UserService.signin(payload);
       res.status(200).json({ token });
     } catch (error: unknown) {
       if (error instanceof Error) {
