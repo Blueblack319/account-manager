@@ -37,6 +37,8 @@ class DealService {
         tickers,
         totalPrice,
       });
+
+      style.totalBuyingPrice += totalPrice;
       style.deals?.push(deal);
       style.save();
 

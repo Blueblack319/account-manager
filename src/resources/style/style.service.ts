@@ -53,6 +53,18 @@ class StyleService {
   }
 
   /**
+   * Find my all styles
+   */
+  public async findMyAll(userId: Types.ObjectId): Promise<Style[]> {
+    try {
+      const styles = await this.style.find({ owner: userId }).populate('deals');
+      return styles;
+    } catch (e) {
+      throw new Error('Unable to find styles');
+    }
+  }
+
+  /**
    * Find all styles in user
    */
   public async findAllStyleInUser(

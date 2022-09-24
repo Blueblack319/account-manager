@@ -62,8 +62,8 @@ class UserController implements Controller {
   ): Promise<Response | void> => {
     try {
       const payload = req.body;
-      const token = await this.UserService.signup(payload);
-      res.status(201).json({ token });
+      const response = await this.UserService.signup(payload);
+      res.status(201).json({ ...response });
     } catch (error: unknown) {
       if (error instanceof Error) {
         next(new HttpException(400, error.message));
@@ -78,8 +78,8 @@ class UserController implements Controller {
   ): Promise<Response | void> => {
     try {
       const payload = req.body;
-      const token = await this.UserService.signin(payload);
-      res.status(200).json({ token });
+      const response = await this.UserService.signin(payload);
+      res.status(200).json({ ...response });
     } catch (error: unknown) {
       if (error instanceof Error) {
         next(new HttpException(400, error.message));

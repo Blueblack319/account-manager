@@ -13,11 +13,17 @@ interface User {
   isValidPassword(password: string): Promise<Error | boolean>;
 }
 
-// inter
 interface SignupInput {
   email: string;
   name: string;
   password: string;
+}
+
+interface SignupOutput {
+  id: string;
+  email: string;
+  name: string;
+  token: string;
 }
 
 interface SigninInput {
@@ -25,9 +31,18 @@ interface SigninInput {
   password: string;
 }
 
+interface SigninOutput extends SignupOutput {}
+
 interface EditUserInput {
   email: string;
   name: string;
 }
 
-export { User, SignupInput, SigninInput, EditUserInput };
+export {
+  User,
+  SignupInput,
+  SigninInput,
+  EditUserInput,
+  SigninOutput,
+  SignupOutput,
+};

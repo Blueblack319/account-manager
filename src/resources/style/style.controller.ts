@@ -25,6 +25,7 @@ class StyleController implements Controller {
       authenticatedMiddleware,
       this.create
     );
+    this.router.get('/my-styles', authenticatedMiddleware, this.findMyAll);
     this.router.get(`${this.path}/all`, this.findAll);
     this.router.get(`${this.path}/:id`, authenticatedMiddleware, this.findById);
     this.router.get(this.path, this.findByTitle);
@@ -67,6 +68,22 @@ class StyleController implements Controller {
   ): Promise<Response | void> => {
     try {
       const styles = await this.StyleService.findAll();
+      res.status(200).json({ styles });
+    } catch (e) {
+      if (e instanceof Error) {
+        next(new HttpException(400, e.message));
+      }
+    }
+  };
+
+  private findMyAll = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> => {
+    try {
+      const userId = req.userId;
+      const styles = await this.StyleService.findMyAll(userId);
       res.status(200).json({ styles });
     } catch (e) {
       if (e instanceof Error) {

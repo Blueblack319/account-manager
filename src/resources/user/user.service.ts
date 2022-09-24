@@ -4,7 +4,9 @@ import { Types } from 'mongoose';
 import {
   EditUserInput,
   SigninInput,
+  SigninOutput,
   SignupInput,
+  SignupOutput,
   User,
 } from './user.interface';
 
@@ -14,11 +16,18 @@ class UserService {
   /**
    * Register a new user
    */
-  public async signup(registerInput: SignupInput): Promise<string | undefined> {
+  public async signup(
+    registerInput: SignupInput
+  ): Promise<SignupOutput | undefined> {
     try {
       const user = await this.user.create({ ...registerInput });
       const accessToken = token.createToken(user._id);
-      return accessToken;
+      return {
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        token: accessToken,
+      };
     } catch (e) {
       if (e instanceof Error) {
         throw new Error(e.message ? e.message : 'Unable to signup');
@@ -29,7 +38,7 @@ class UserService {
   /**
    * Login user
    */
-  public async signin(signinInput: SigninInput): Promise<string | void> {
+  public async signin(signinInput: SigninInput): Promise<SigninOutput | void> {
     try {
       const { email, password } = signinInput;
       const user = await this.user.findOne({ email });
@@ -38,7 +47,13 @@ class UserService {
       }
 
       if (await user.isValidPassword(password)) {
-        return token.createToken(user._id);
+        const accessToken = token.createToken(user._id);
+        return {
+          id: user._id.toString(),
+          email: user.email,
+          name: user.name,
+          token: accessToken,
+        };
       } else {
         throw new Error('Wrong password');
       }
