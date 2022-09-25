@@ -24,11 +24,24 @@ class DealService {
       if (!style) {
         throw new Error('This style is not yours');
       }
-      tickers.forEach((ticker) => {
-        if (ticker.isBuying) {
-          totalPrice += ticker.price * ticker.count;
+      tickers.forEach((tickerInfo) => {
+        const idx = style.overview.findIndex(
+          (overviewInfo) => overviewInfo.ticker === tickerInfo.ticker
+        );
+        if (tickerInfo.isBuying) {
+          totalPrice += tickerInfo.price * tickerInfo.count;
+          if (idx === -1) {
+            style.overview?.push({
+              ticker: tickerInfo.ticker,
+              count: tickerInfo.count,
+              name: 'Something here in next',
+            });
+          } else {
+            style.overview[idx].count += tickerInfo.count;
+          }
         } else {
-          totalPrice -= ticker.price * ticker.count;
+          totalPrice -= tickerInfo.price * tickerInfo.count;
+          style.overview[idx].count -= tickerInfo.count;
         }
       });
       const deal = await this.deal.create({

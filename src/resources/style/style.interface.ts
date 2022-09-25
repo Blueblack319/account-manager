@@ -1,6 +1,12 @@
 import { Deal } from '@/resources/deal/deal.interface';
 import { Types } from 'mongoose';
 
+interface TickerInfo {
+  ticker: string;
+  name: string;
+  count: number;
+}
+
 interface Style {
   owner: Types.ObjectId;
   name: string;
@@ -8,6 +14,7 @@ interface Style {
   totalBuyingPrice: number;
   isShared: boolean;
   isAnonym: boolean;
+  overview: TickerInfo[];
   deals?: Deal[];
 }
 

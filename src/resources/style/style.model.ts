@@ -2,6 +2,12 @@ import { Schema, model, Types, Query } from 'mongoose';
 import { Style } from '@/resources/style/style.interface';
 import DealModel from '@/resources/deal/deal.model';
 
+const tickerInfo = new Schema({
+  ticker: String,
+  name: String,
+  count: Number,
+});
+
 const StyleSchema = new Schema({
   owner: {
     type: Types.ObjectId,
@@ -30,6 +36,7 @@ const StyleSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  overview: [tickerInfo],
   deals: [
     {
       type: Types.ObjectId,

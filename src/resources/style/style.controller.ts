@@ -69,7 +69,6 @@ class StyleController implements Controller {
     try {
       const styles = await this.StyleService.findAll();
       res.status(200).json({ styles });
-      console.log('test');
     } catch (e) {
       if (e instanceof Error) {
         next(new HttpException(400, e.message));

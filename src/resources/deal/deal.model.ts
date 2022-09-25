@@ -2,44 +2,44 @@ import { Schema, model, Types } from 'mongoose';
 import { Deal } from '@/resources/deal/deal.interface';
 import StyleModel from '@/resources/style/style.model';
 
-const TickerSchema = new Schema(
-  {
-    ticker: {
-      type: String,
-      required: true,
-    },
-    isBuying: {
-      type: Boolean,
-      required: true,
-    },
-    count: {
-      type: Number,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-  },
-  { timestamps: true }
-);
-
-export const DealSchema = new Schema({
-  style: {
-    type: Types.ObjectId,
-    required: true,
-    ref: 'Style',
-  },
-  description: {
+const TickerSchema = new Schema({
+  ticker: {
     type: String,
     required: true,
   },
-  totalPrice: {
+  isBuying: {
+    type: Boolean,
+    required: true,
+  },
+  count: {
     type: Number,
     required: true,
   },
-  tickers: [TickerSchema],
+  price: {
+    type: Number,
+    required: true,
+  },
 });
+
+export const DealSchema = new Schema(
+  {
+    style: {
+      type: Types.ObjectId,
+      required: true,
+      ref: 'Style',
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    totalPrice: {
+      type: Number,
+      required: true,
+    },
+    tickers: [TickerSchema],
+  },
+  { timestamps: true }
+);
 
 // TODO: totalPrice가 바뀌었다면 style의 totalBuyingPrice 변화주기
 // 기존 값 빼주기
