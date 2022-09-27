@@ -73,4 +73,4 @@ DB
 - [ ] 모든 request에 validation 확인하기
 - [ ] isAnonym을 확인해서 처리하기
 - [ ] try-catch문에 대한 이해 부족
-- [ ]
+- [x] count가 0보다 작다면 더이상 계산하지 못 하게

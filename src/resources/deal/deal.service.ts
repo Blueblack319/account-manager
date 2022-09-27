@@ -40,6 +40,9 @@ class DealService {
             style.overview[idx].count += tickerInfo.count;
           }
         } else {
+          if (tickerInfo.count > style.overview[idx].count) {
+            throw new Error('You cannot sign a deal with this count of stocks');
+          }
           totalPrice -= tickerInfo.price * tickerInfo.count;
           style.overview[idx].count -= tickerInfo.count;
         }
@@ -75,16 +78,33 @@ class DealService {
       const user = await this.user
         .findOne({ styles: { $in: deal.style } })
         .select('_id');
+      const style = await this.style.findById(deal.style);
       if (!user) {
         throw new Error('User not found');
       }
       if (!userId.equals(user._id)) {
         throw new Error('This style of deal is not yours');
       }
+      if (!style) {
+        throw new Error('Style not found');
+      }
+      deal.tickers.forEach((tickerInfo) => {
+        const idx = style.overview.findIndex(
+          (overviewInfo) => overviewInfo.ticker === tickerInfo.ticker
+        );
+        if (tickerInfo.isBuying) {
+          // 산 거였으면 빼주기
+          style.overview[idx].count -= tickerInfo.count;
+        } else {
+          style.overview[idx].count += tickerInfo.count;
+        }
+      });
       await this.style.findByIdAndUpdate(
         { _id: deal.style },
         { $pull: { deals: dealId } }
       );
+
+      await style.save();
       await deal.deleteOne();
     } catch (e) {
       if (e instanceof Error) {
